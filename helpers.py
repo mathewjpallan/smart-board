@@ -7,9 +7,9 @@ def getProjectionAreaCoordinates(srcImage):
     cv.destroyAllWindows()
     return (int(r[1]),int(r[1]+r[3]), int(r[0]),int(r[0]+r[2]))
 
-def mapCamCoordinatesToScreenCoordinates(point, camCoordinates):
+def mapCamCoordinatesToScreenCoordinates(point, camCoordinates, screenResolution):
     #Change your screen resolution here
-    resScreen = [1920, 1080]
+    resScreen = [screenResolution[0], screenResolution[1]]
     #The camResolution is measured from the projection area coordinates
     resImage = [(camCoordinates[3] - camCoordinates[2]), (camCoordinates[1] - camCoordinates[0])]
     return ((resScreen[0] / resImage[0]) * point[0], (resScreen[1] / resImage[1]) * point[1] )

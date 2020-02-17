@@ -5,6 +5,9 @@ from helpers import *
 
 mouse = Controller()
 
+#Update your screen resolution here.
+screenResolution = (1920,1080)
+
 while True:
     userReady = raw_input('Point the cam towards the projector output and press the y key when ready - ')
     if userReady == 'y':
@@ -60,10 +63,10 @@ while True:
             extLeft = tuple(contour[contour[:, :, 0].argmin()][0])
             print('extLeft' + str(extLeft))
 
-            screenCoordinates = mapCamCoordinatesToScreenCoordinates(extLeft, camCoordinates)
+            screenCoordinates = mapCamCoordinatesToScreenCoordinates(extLeft, camCoordinates, screenResolution)
             print('screenCoordinates' + str(screenCoordinates))
             #Moving the mouse pointer to the detected screen coordinates
-            mouse.position = (1920 + int(screenCoordinates[0]), int(screenCoordinates[1]))
+            mouse.position = (int(screenCoordinates[0]), int(screenCoordinates[1]))
     if cv.waitKey(50) == ord('q'):
         break
 
