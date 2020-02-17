@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+from collections import deque
 from pynput.mouse import Button, Controller
 from helpers import *
 
@@ -7,15 +8,16 @@ mouse = Controller()
 
 #Update your screen resolution here.
 screenResolution = (1920,1080)
-
+closenessCounter = 0
+previousScreenCoordinates = (0,0)
 while True:
     userReady = raw_input('Point the cam towards the projector output and press the y key when ready - ')
     if userReady == 'y':
         break;
 
 #Running the IP webcam apk on a mobile and reading the video stream from that device. The IP address below is that shown in the IP webcam app display.
-#cap = cv.VideoCapture('http://10.42.0.66:8080/video')
-cap = cv.VideoCapture(0) #This is for accessing the video stream from webcams that are attached to the workstation
+cap = cv.VideoCapture('http://10.42.0.66:8080/video')
+#cap = cv.VideoCapture(0) #This is for accessing the video stream from webcams that are attached to the workstation
 
 if not cap.isOpened():
     print("Cannot open camera")
@@ -61,13 +63,22 @@ while True:
         if isPointer(contour):
             #find the extreme left point of the contour.
             extLeft = tuple(contour[contour[:, :, 0].argmin()][0])
-            print('extLeft' + str(extLeft))
 
             screenCoordinates = mapCamCoordinatesToScreenCoordinates(extLeft, camCoordinates, screenResolution)
-            print('screenCoordinates' + str(screenCoordinates))
             #Moving the mouse pointer to the detected screen coordinates
-            mouse.position = (int(screenCoordinates[0]), int(screenCoordinates[1]))
-    if cv.waitKey(50) == ord('q'):
+            mouse.position = (1920 + int(screenCoordinates[0]), int(screenCoordinates[1]))
+            if arePointsClose(screenCoordinates, previousScreenCoordinates):
+                closenessCounter += 1
+                previousScreenCoordinates = screenCoordinates
+                if closenessCounter > 5:
+                    closenessCounter = 0
+                    mouse.press(Button.left)
+                    mouse.release(Button.left)
+            else:
+                previousScreenCoordinates = screenCoordinates
+                    
+    
+    if cv.waitKey(10) == ord('q'):
         break
 
 #Releasing all resources before exit

@@ -21,3 +21,9 @@ def isPointer(contour):
         return True
     else:
         return False
+
+def arePointsClose(point, previousPoint):
+    if abs(point[0] - previousPoint[0]) < 30 and abs(point[1] - previousPoint[1]) < 30:
+        return True;
+    else:
+        return False;
