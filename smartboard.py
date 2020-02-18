@@ -11,7 +11,7 @@ screenResolution = (1920,1080)
 closenessCounter = 0
 previousScreenCoordinates = (0,0)
 while True:
-    userReady = raw_input('Point the cam towards the projector output and press the y key when ready - ')
+    userReady = input('Point the cam towards the projector output and press the y key when ready - ')
     if userReady == 'y':
         break;
 
@@ -70,7 +70,7 @@ while True:
             if arePointsClose(screenCoordinates, previousScreenCoordinates):
                 closenessCounter += 1
                 previousScreenCoordinates = screenCoordinates
-                if closenessCounter > 5:
+                if closenessCounter > 2:
                     closenessCounter = 0
                     mouse.press(Button.left)
                     mouse.release(Button.left)

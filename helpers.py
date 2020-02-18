@@ -23,7 +23,12 @@ def isPointer(contour):
         return False
 
 def arePointsClose(point, previousPoint):
-    if abs(point[0] - previousPoint[0]) < 30 and abs(point[1] - previousPoint[1]) < 30:
+    #print('abs(x)' + str(abs(point[0] - previousPoint[0])))
+    #print('abs(y)' + str(abs(point[1] - previousPoint[1])))
+    if abs(point[0] - previousPoint[0]) < 200 and abs(point[1] - previousPoint[1]) < 200:
         return True;
     else:
         return False;
+
+def safe_division(n, d):
+    return n / d if d else 0
